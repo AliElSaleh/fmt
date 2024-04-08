@@ -35,7 +35,7 @@ or maybe some more options?
 ```cmd
 riftbuild shared release pedantic
 ```
-Fuck CMake
+Fuck CMake [fmt.build](fmt.build)
 
 
 # Features
