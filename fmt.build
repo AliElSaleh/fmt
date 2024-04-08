@@ -44,5 +44,5 @@ if compiler == cl {
     DebugFlags   /std:c++20 /Od /EHa /MDd /Z7 $PedanticFlags
     ReleaseFlags /std:c++20 /O2 /EHa /MD $PedanticFlags
 
-    if debug   LinkerFlags /DEBUG ; Defines _DEBUG else Defines NDEBUG
+    if debug LinkerFlags /DEBUG ; Defines _DEBUG else Defines NDEBUG
 }
