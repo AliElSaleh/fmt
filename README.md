@@ -22,6 +22,22 @@ fmt](https://stackoverflow.com/questions/tagged/fmt).
 
 Try {fmt} in [Compiler Explorer](https://godbolt.org/z/8Mx1EW73v).
 
+# Rift Build
+To build fmt (static)
+```cmd
+riftbuild
+```
+To build a shared library
+```cmd
+riftbuild shared
+```
+Maybe some more options?
+```cmd
+riftbuild shared release pedantic
+```
+Fuck CMake
+
+
 # Features
 
 - Simple [format API](https://fmt.dev/latest/api.html) with positional
