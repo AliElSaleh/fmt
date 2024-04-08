@@ -10,8 +10,11 @@ Includes include
 if shared Defines FMT_SHARED FMT_LIB_EXPORT else Defines FMT_STATIC
 if _platform == windows Defines _WIN32
 
-if debug   BuildDirectory Build/Debug   ; CompilerFlags $DebugFlags
-if !debug  BuildDirectory Build/Release ; CompilerFlags $ReleaseFlags
+if debug   BuildDirectory Build/Debug
+if !debug  BuildDirectory Build/Release
+
+if debug   CompilerFlags $DebugFlags
+if !debug  CompilerFlags $ReleaseFlags
 
 PedanticFlags
 if compiler == clang++ {
