@@ -27,11 +27,11 @@ To build fmt (static)
 ```cmd
 riftbuild
 ```
-To build a shared library
+or build a shared library
 ```cmd
 riftbuild shared
 ```
-Maybe some more options?
+or maybe some more options?
 ```cmd
 riftbuild shared release pedantic
 ```
