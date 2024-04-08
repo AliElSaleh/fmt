@@ -23,17 +23,17 @@ fmt](https://stackoverflow.com/questions/tagged/fmt).
 Try {fmt} in [Compiler Explorer](https://godbolt.org/z/8Mx1EW73v).
 
 # Rift Build
-To build fmt (static)
+To build fmt
 ```cmd
 riftbuild
 ```
-or build a shared library
+or a shared library
 ```cmd
 riftbuild shared
 ```
 or maybe some more options?
 ```cmd
-riftbuild shared release pedantic
+riftbuild shared debug pedantic
 ```
 Fuck CMake [fmt.build](fmt.build)
 
