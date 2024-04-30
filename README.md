@@ -22,7 +22,7 @@ fmt](https://stackoverflow.com/questions/tagged/fmt).
 
 Try {fmt} in [Compiler Explorer](https://godbolt.org/z/8Mx1EW73v).
 
-# Rift Build
+# Building
 To build fmt
 ```cmd
 riftbuild
