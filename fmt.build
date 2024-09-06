@@ -1,48 +1,34 @@
 Assembly fmt
 if shared Type dynamic_lib else Type static_lib
-if cl Compiler cl else Compiler clang++
+if cl     Compiler cl      else Compiler clang++ | >= 17.0.0
 
-SourceDirectory src
+SourceDirectory     src
 ExcludedSourceFiles fmt.cc
 
-Includes include
+Includes            include
 
-if shared Defines FMT_SHARED FMT_LIB_EXPORT else Defines FMT_STATIC
-if _platform == windows Defines _WIN32
+if shared           Defines FMT_SHARED FMT_LIB_EXPORT else Defines FMT_STATIC
+if windows          Defines _WIN32
 
-if debug   BuildDirectory Build/Debug
-if !debug  BuildDirectory Build/Release
+if debug            BuildDirectory Build/Debug
+if !debug           BuildDirectory Build/Release
 
-if debug   CompilerFlags $DebugFlags
-if !debug  CompilerFlags $ReleaseFlags
+if debug            CompilerFlags $DebugFlags
+if !debug           CompilerFlags $ReleaseFlags
 
 PedanticFlags
 if compiler == clang++ {
-    if pedantic PedanticFlags -Wall -Wextra -pedantic -Wconversion -Wundef -Wdeprecated -Wweak-vtables -Wshadow -Wno-gnu-zero-variadic-macro-arguments
+    if pedantic     PedanticFlags -Wall -Wextra -pedantic -Wconversion -Wundef -Wdeprecated -Wweak-vtables -Wshadow -Wno-gnu-zero-variadic-macro-arguments
 
-    DebugFlags   -std=c++20 -O0 $PedanticFlags
-    ReleaseFlags -std=c++20 -O3 $PedanticFlags
-}
-
-if compiler == g++ {
-    if pedantic PedanticFlags [
-        -pedantic-errors 
-        -Wall -Wextra -pedantic -Wold-style-cast 
-        -Wundef -Wredundant-decls -Wwrite-strings 
-        -Wpointer-arith -Wcast-qual -Wformat=2 
-        -Wmissing-include-dirs -Wcast-align 
-        -Wctor-dtor-privacy -Wdisabled-optimization 
-        -Winvalid-pch -Woverloaded-virtual -Wconversion 
-        -Wundef -Wno-ctor-dtor-privacy -Wno-format-nonliteral
-    ]
-
-    DebugFlags   -std=c++20 -O0 $PedanticFlags
-    ReleaseFlags -std=c++20 -O3 $PedanticFlags
+    DebugFlags      -std=c++20 -O0 $PedanticFlags
+    ReleaseFlags    -std=c++20 -O3 $PedanticFlags
 }
 
 if compiler == cl {
-    DebugFlags   /std:c++20 /Od /EHa /MDd /Z7 $PedanticFlags
-    ReleaseFlags /std:c++20 /O2 /EHa /MD $PedanticFlags
+    DebugFlags      /std:c++20 /Od /EHa /MDd /Z7 $PedanticFlags
+    ReleaseFlags    /std:c++20 /O2 /EHa /MD $PedanticFlags
 
-    if debug LinkerFlags /DEBUG ; Defines _DEBUG else Defines NDEBUG
+    if debug        LinkerFlags /DEBUG
+    if debug        Defines     _DEBUG
+    if !debug       Defines NDEBUG
 }
