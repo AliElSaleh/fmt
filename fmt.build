@@ -1,6 +1,6 @@
 Assembly fmt
-if shared Type dynamic_lib else Type static_lib
-if cl     Compiler cl      else Compiler clang++ | >= 17.0.0
+if shared  Type     dynamic_lib else Type     static_lib
+if windows Compiler cl          else Compiler clang++
 
 SourceDirectory     src
 ExcludedSourceFiles fmt.cc
