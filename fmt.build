@@ -1,34 +1,114 @@
 Assembly fmt
-if shared  Type     dynamic_lib else Type     static_lib
-if windows Compiler cl          else Compiler clang++
 
-SourceDirectory     src
-ExcludedSourceFiles fmt.cc
+Compiler:windows msvc
+Compiler:unix    clang++
+
+SourceFiles src/format.cc src/os.cc
 
 Includes            include
+Includes.Public     $Includes
 
-if shared           Defines FMT_SHARED FMT_LIB_EXPORT else Defines FMT_STATIC
-if windows          Defines _WIN32
-
-if debug            BuildDirectory Build/Debug
-if !debug           BuildDirectory Build/Release
-
-if debug            CompilerFlags $DebugFlags
-if !debug           CompilerFlags $ReleaseFlags
-
-PedanticFlags
-if compiler == clang++ {
-    if pedantic     PedanticFlags -Wall -Wextra -pedantic -Wconversion -Wundef -Wdeprecated -Wweak-vtables -Wshadow -Wno-gnu-zero-variadic-macro-arguments
-
-    DebugFlags      -std=c++20 -O0 $PedanticFlags
-    ReleaseFlags    -std=c++20 -O3 $PedanticFlags
+if shared
+{
+    Type       shared_library
+    Defines    FMT_SHARED FMT_LIB_EXPORT
+}
+else
+{
+    Type       static_library
+    Defines    FMT_STATIC
 }
 
-if compiler == cl {
-    DebugFlags      /std:c++20 /Od /EHa /MDd /Z7 $PedanticFlags
-    ReleaseFlags    /std:c++20 /O2 /EHa /MD $PedanticFlags
-
-    if debug        LinkerFlags /DEBUG
-    if debug        Defines     _DEBUG
-    if !debug       Defines NDEBUG
+if debug
+{
+    BuildDirectory Build/Debug
+    Defines        _DEBUG
 }
+else
+{
+    BuildDirectory Build/Release
+    Defines        NDEBUG
+}
+
+if clang++
+{
+    PedanticFlags:pedantic
+    [
+        -Werror
+        -Wall -Wextra -pedantic
+        -Wconversion -Wundef -Wdeprecated
+        -Wweak-vtables -Wshadow
+        -Wno-gnu-zero-variadic-macro-arguments
+    ]
+
+    Compiler.Flags         -std=c++20 $PedanticFlags
+
+    Compiler.Flags:debug   -O0
+    Compiler.Flags:!debug  -O3
+}
+
+if g++
+{
+    PedanticFlags:pedantic
+    [
+        -Werror
+        -pedantic-errors
+        -Wall -Wextra -pedantic
+        -Wold-style-cast -Wundef
+        -Wredundant-decls -Wwrite-strings -Wpointer-arith
+        -Wcast-qual -Wformat=2 -Wmissing-include-dirs
+        -Wcast-align
+        -Wctor-dtor-privacy -Wdisabled-optimization
+        -Winvalid-pch -Woverloaded-virtual
+        -Wconversion -Wundef
+        -Wno-ctor-dtor-privacy -Wno-format-nonliteral
+    ]
+
+    if g++.version > 4.6
+    {
+        PedanticFlags:pedantic
+        [
+            -Wno-dangling-else -Wno-unused-local-typedefs
+        ]
+    }
+
+    if g++.version > 5.0
+    {
+        PedanticFlags:pedantic
+        [
+            -Wdouble-promotion
+            -Wtrampolines -Wzero-as-null-pointer-constant -Wuseless-cast
+            -Wvector-operation-performance -Wsized-deallocation -Wshadow
+        ]
+    }
+
+    if g++.version > 6.0
+    {
+        PedanticFlags:pedantic
+        [
+            -Wshift-overflow=2
+            -Wnull-dereference -Wduplicated-cond
+        ]
+    }
+
+    Compiler.Flags         -std=c++20 $PedanticFlags
+
+    Compiler.Flags:debug   -O0
+    Compiler.Flags:!debug  -O3
+}
+
+if cl
+{
+    PedanticFlags:pedantic /W3 /WX
+
+    Compiler.Flags         /std:c++20 $PedanticFlags
+
+    Compiler.Flags:debug   /Od /EHa /MDd /Z7
+    Compiler.Flags:!debug  /O2 /EHa /MD
+
+    Linker.Flags:debug     /DEBUG
+}
+
+option.pedantic(on) Build fmt with strict compiler warnings and treat them as errors
+option.debug
+option.shared
