@@ -5,29 +5,29 @@ Compiler:unix    clang++
 
 SourceFiles src/format.cc src/os.cc
 
-Includes            include
-Includes.Public     $Includes
+Compiler.Includes            include
+Compiler.Includes.Public     $Includes
 
 if shared
 {
-    Type       shared_library
-    Defines    FMT_SHARED FMT_LIB_EXPORT
+    Type             shared_library
+    Compiler.Defines FMT_SHARED FMT_LIB_EXPORT
 }
 else
 {
-    Type       static_library
-    Defines    FMT_STATIC
+    Type             static_library
+    Compiler.Defines FMT_STATIC
 }
 
 if debug
 {
-    BuildDirectory Build/Debug
-    Defines        _DEBUG
+    BuildDirectory   Build/Debug
+    Compiler.Defines _DEBUG
 }
 else
 {
-    BuildDirectory Build/Release
-    Defines        NDEBUG
+    BuildDirectory   Build/Release
+    Compiler.Defines NDEBUG
 }
 
 if clang++
@@ -109,6 +109,6 @@ if cl
     Linker.Flags:debug     /DEBUG
 }
 
-option.pedantic(on) Build fmt with strict compiler warnings and treat them as errors
+option.pedantic Build fmt with strict compiler warnings and treat them as errors
 option.debug
 option.shared
