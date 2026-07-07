@@ -6,7 +6,7 @@ Compiler:unix    clang++
 SourceFiles src/format.cc src/os.cc
 
 Compiler.Includes            include
-Compiler.Includes.Public     $Includes
+Compiler.Includes.Export     $Includes
 
 if shared
 {
